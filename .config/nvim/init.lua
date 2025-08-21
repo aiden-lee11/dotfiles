@@ -43,6 +43,16 @@ vim.keymap.set(
 	{ desc = "Refresh snippets" }
 )
 
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "typescriptreact",
+	callback = function()
+		vim.opt_local.tabstop = 2
+		vim.opt_local.shiftwidth = 2
+		vim.opt_local.softtabstop = 2
+		vim.opt_local.expandtab = true
+	end,
+})
+
 -- Set jq as the formatter for JSON files
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "json",
@@ -205,6 +215,12 @@ require("lazy").setup({
 			},
 		},
 	},
+	-- {
+	-- 	"m4xshen/hardtime.nvim",
+	-- 	lazy = false,
+	-- 	dependencies = { "MunifTanjim/nui.nvim" },
+	-- 	opts = {},
+	-- },
 	{
 		"theprimeagen/harpoon",
 		branch = "harpoon2",
@@ -355,6 +371,15 @@ require("lazy").setup({
 				callback = function()
 					vim.o.conceallevel = 1
 				end,
+			})
+		end,
+	},
+	{
+		"roberte777/keep-it-secret.nvim",
+		config = function()
+			require("keep-it-secret").setup({
+				wildcards = { ".*(.env)$", ".*(.secret)$" },
+				enabled = true,
 			})
 		end,
 	},
@@ -658,7 +683,7 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				-- clangd = {},
+				clangd = {},
 				gopls = {},
 				pyright = {},
 				jdtls = {},
@@ -757,6 +782,8 @@ require("lazy").setup({
 				lua = { "stylua" },
 				-- Conform can also run multiple formatters sequentially
 				python = { "isort", "black" },
+				cpp = { "clang-format" },
+
 				--
 				-- You can use 'stop_after_first' to run the first available formatter from the list
 				-- javascript = { "prettierd", "prettier", stop_after_first = true },
